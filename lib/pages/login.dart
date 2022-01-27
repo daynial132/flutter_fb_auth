@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/forgetpassword.dart';
 import 'package:flutter_fb_auth/pages/signup.dart';
+import 'package:flutter_fb_auth/pages/user/UserMain.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -28,7 +29,6 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
                     labelStyle: TextStyle(fontSize: 20.0),
                     border: OutlineInputBorder(),
                     errorStyle:
-                    TextStyle(color: Colors.redAccent, fontSize: 15),
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
                   ),
                   controller: emailController,
                   validator: (value) {
@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                     labelStyle: TextStyle(fontSize: 20.0),
                     border: OutlineInputBorder(),
                     errorStyle:
-                    TextStyle(color: Colors.redAccent, fontSize: 15),
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
                   ),
                   controller: passwordController,
                   validator: (value) {
@@ -97,7 +97,7 @@ class _LoginState extends State<Login> {
                             email = emailController.text;
                             password = passwordController.text;
                           });
-                         // userLogin();
+                          userLogin();
                         }
                       },
                       child: Text(
@@ -135,7 +135,7 @@ class _LoginState extends State<Login> {
                               pageBuilder: (context, a, b) => Signup(),
                               transitionDuration: Duration(seconds: 0),
                             ),
-                                (route) => false)
+                            (route) => false)
                       },
                       child: Text('Signup'),
                     ),
@@ -159,5 +159,10 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void userLogin() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => UserMain()));
   }
 }
