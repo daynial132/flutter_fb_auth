@@ -6,5 +6,5 @@ A new Flutter project for firebase singin/singup
 
 This project is a starting point for a Flutter application.
 
-following the lin below
+following the link below
 (https://www.youtube.com/watch?v=JVSHH6vYxGM)
