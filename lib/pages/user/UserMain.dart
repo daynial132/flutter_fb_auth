@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/login.dart';
 import 'package:flutter_fb_auth/pages/user/changePassword.dart';
@@ -36,7 +37,7 @@ class _UserMainState extends State<UserMain> {
             Text("Welcome User"),
             ElevatedButton(
               onPressed: () async => {
-                //await FirebaseAuth.instance.signOut(),
+                await FirebaseAuth.instance.signOut(),
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
