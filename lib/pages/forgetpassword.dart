@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/login.dart';
 import 'package:flutter_fb_auth/pages/signup.dart';
@@ -81,7 +82,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 setState(() {
                                   email = emailController.text;
                                 });
-                               // resetPassword();
+                                resetPassword();
                               }
                             },
                             child: Text(
@@ -137,4 +138,34 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       ),
     );
   }
+
+
+  resetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            'Password Reset Email has been sent !',
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              'No user found for that email.',
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+        );
+      }
+    }
+  }
+
 }
