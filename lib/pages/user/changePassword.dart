@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fb_auth/pages/login.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -74,5 +76,25 @@ class _ChangePasswordState extends State<ChangePassword> {
     );
   }
 
-  void changePassword() {}
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+  void changePassword() async {
+    try {
+      await currentUser!.updatePassword(newPassword);
+      FirebaseAuth.instance.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            'Your Password has been Changed. Login again !',
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      );
+    } catch (e) {}
+  }
 }
