@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/login.dart';
 
@@ -14,6 +15,7 @@ class _SignupState extends State<Signup> {
   var email = "";
   var password = "";
   var confirmPassword = "";
+
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final emailController = TextEditingController();
@@ -50,7 +52,7 @@ class _SignupState extends State<Signup> {
                     labelStyle: TextStyle(fontSize: 20.0),
                     border: OutlineInputBorder(),
                     errorStyle:
-                    TextStyle(color: Colors.redAccent, fontSize: 15),
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
                   ),
                   controller: emailController,
                   validator: (value) {
@@ -73,7 +75,7 @@ class _SignupState extends State<Signup> {
                     labelStyle: TextStyle(fontSize: 20.0),
                     border: OutlineInputBorder(),
                     errorStyle:
-                    TextStyle(color: Colors.redAccent, fontSize: 15),
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
                   ),
                   controller: passwordController,
                   validator: (value) {
@@ -94,7 +96,7 @@ class _SignupState extends State<Signup> {
                     labelStyle: TextStyle(fontSize: 20.0),
                     border: OutlineInputBorder(),
                     errorStyle:
-                    TextStyle(color: Colors.redAccent, fontSize: 15),
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
                   ),
                   controller: confirmPasswordController,
                   validator: (value) {
@@ -118,7 +120,7 @@ class _SignupState extends State<Signup> {
                             password = passwordController.text;
                             confirmPassword = confirmPasswordController.text;
                           });
-                         // registration();
+                          registration();
                         }
                       },
                       child: Text(
@@ -136,16 +138,16 @@ class _SignupState extends State<Signup> {
                     Text("Already have an Account? "),
                     TextButton(
                         onPressed: () => {
-                          Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation1, animation2) =>
-                                  Login(),
-                              transitionDuration: Duration(seconds: 0),
-                            ),
-                          )
-                        },
+                              Navigator.pushReplacement(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          Login(),
+                                  transitionDuration: Duration(seconds: 0),
+                                ),
+                              )
+                            },
                         child: Text('Login'))
                   ],
                 ),
@@ -155,5 +157,65 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+  }
+
+  void registration() async {
+    if (password == confirmPassword) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        print(userCredential);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              "Registered Successfully. Please Login..",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Login(),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print("Password Provided is too Weak");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Password Provided is too Weak",
+                style: TextStyle(fontSize: 18.0, color: Colors.black),
+              ),
+            ),
+          );
+        } else if (e.code == 'email-already-in-use') {
+          print("Account Already exists");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Account Already exists",
+                style: TextStyle(fontSize: 18.0, color: Colors.black),
+              ),
+            ),
+          );
+        }
+      }
+    } else {
+      print("Password and Confirm Password doesn't match");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            "Password and Confirm Password doesn't match",
+            style: TextStyle(fontSize: 16.0, color: Colors.black),
+          ),
+        ),
+      );
+    }
   }
 }
