@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/login.dart';
+import 'package:flutter_fb_auth/pages/mobileverification.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -177,7 +178,7 @@ class _SignupState extends State<Signup> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Login(),
+            builder: (context) => MobileVerification(),
           ),
         );
       } on FirebaseAuthException catch (e) {
