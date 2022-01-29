@@ -170,7 +170,7 @@ class _SignupState extends State<Signup> {
           SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text(
-              "Registered Successfully. Please Login..",
+              "One more Step to GO",
               style: TextStyle(fontSize: 20.0),
             ),
           ),

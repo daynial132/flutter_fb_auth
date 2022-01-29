@@ -32,12 +32,12 @@ class _MobileVerificationState extends State<MobileVerification> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Phone No. Verification"),
+          title: const Text("Phone No. Verification"),
         ),
         key: _scaffoldKey,
         body: Container(
           child: showLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
@@ -50,72 +50,90 @@ class _MobileVerificationState extends State<MobileVerification> {
   getMobileFormWidget(context) {
     return Column(children: [
       Container(
-        margin: EdgeInsets.symmetric(vertical: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: TextFormField(
             autofocus: false,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Phone Number: ',
-              labelStyle: TextStyle(fontSize: 20.0),
-              border: OutlineInputBorder(),
+              labelStyle: const TextStyle(fontSize: 20.0),
+              border: const OutlineInputBorder(),
               errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-              hintText: "Phone Number", ),
+              hintText: "Phone Number",
+            ),
             controller: phoneController),
       ),
+      const SizedBox(
+        height: 16,
+      ),
+      ElevatedButton(
+        child: const Text(
+          'Send',
+          style: TextStyle(fontSize: 18.0),
+        ),
+        onPressed: () async {
+          setState(() {
+            showLoading = true;
+          });
+          await _auth.verifyPhoneNumber(
+            phoneNumber: phoneController.text,
+            verificationCompleted: (phoneAuthCredential) async {
+              setState(() {
+                showLoading = false;
+              });
+              //signInWithPhoneAuthCredential(phoneAuthCredential);
+            },
+            verificationFailed: (verificationFailed) async {
+              setState(() {
+                showLoading = false;
+              });
+              // _scaffoldKey.currentState.showSnackBar(
+              //     SnackBar(content: Text(verificationFailed.message)));
+            },
+            codeSent: (verificationId, resendingToken) async {
+              setState(() {
+                showLoading = false;
+                currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
+                this.verificationId = verificationId;
+              });
+            },
+            codeAutoRetrievalTimeout: (verificationId) async {},
+          );
+        },
+      )
     ]);
   }
 
-// return Column(
-//   children: [
-//     Spacer(),
-//     TextField(
-//       controller: phoneController,
-//       decoration: InputDecoration(
-//         hintText: "Phone Number",
-//       ),
-//     ),
-//     SizedBox(
-//       height: 16,
-//     ),
-//     FlatButton(
-//       onPressed: () async {
-//         setState(() {
-//           showLoading = true;
-//         });
-//
-//         await _auth.verifyPhoneNumber(
-//           phoneNumber: phoneController.text,
-//           verificationCompleted: (phoneAuthCredential) async {
-//             setState(() {
-//               showLoading = false;
-//             });
-//             //signInWithPhoneAuthCredential(phoneAuthCredential);
-//           },
-//           verificationFailed: (verificationFailed) async {
-//             setState(() {
-//               showLoading = false;
-//             });
-//             // _scaffoldKey.currentState.showSnackBar(
-//             //     SnackBar(content: Text(verificationFailed.message)));
-//           },
-//           codeSent: (verificationId, resendingToken) async {
-//             setState(() {
-//               showLoading = false;
-//               currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
-//               this.verificationId = verificationId;
-//             });
-//           },
-//           codeAutoRetrievalTimeout: (verificationId) async {},
-//         );
-//       },
-//       child: Text("SEND"),
-//       color: Colors.blue,
-//       textColor: Colors.white,
-//     ),
-//     Spacer(),
-//   ],
-// );
-
   getOtpFormWidget(BuildContext context) {
-    return Container();
+    return Column(children: [
+      Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        child: TextFormField(
+            autofocus: false,
+            decoration: const InputDecoration(
+              labelText: 'OTP : ',
+              labelStyle: const TextStyle(fontSize: 20.0),
+              border: const OutlineInputBorder(),
+              errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+              hintText: "OTP No",
+            ),
+            controller: otpController),
+      ),
+      const SizedBox(
+        height: 16,
+      ),
+      ElevatedButton(
+        child: const Text(
+          'Verify',
+          style: TextStyle(fontSize: 18.0),
+        ),
+        onPressed: () async {
+          PhoneAuthCredential phoneAuthCredential =
+              PhoneAuthProvider.credential(
+                  verificationId: verificationId, smsCode: otpController.text);
+          print(phoneAuthCredential);
+          // signInWithPhoneAuthCredential(phoneAuthCredential);
+        },
+      )
+    ]);
   }
 }
