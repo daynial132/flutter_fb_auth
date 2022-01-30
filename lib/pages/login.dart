@@ -4,6 +4,8 @@ import 'package:flutter_fb_auth/pages/forgetpassword.dart';
 import 'package:flutter_fb_auth/pages/mobileverification.dart';
 import 'package:flutter_fb_auth/pages/signup.dart';
 import 'package:flutter_fb_auth/pages/user/UserMain.dart';
+import 'package:flutter_fb_auth/theme/thememodel.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -25,6 +27,8 @@ class _LoginState extends State<Login> {
 
   bool showLoading = false;
 
+  var newValue;
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -35,8 +39,20 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                themeNotifier.isDark
+                    ? themeNotifier.isDark = false
+                    : themeNotifier.isDark = true;
+              },
+              icon: Icon(themeNotifier.isDark
+                  ? Icons.nightlight_round
+                  : Icons.wb_sunny))
+        ],
         title: const Text("User Login"),
       ),
       body: Form(
@@ -188,7 +204,7 @@ class _LoginState extends State<Login> {
                 ),
         ),
       ),
-    );
+    );});
   }
 
   userLogin() async {
