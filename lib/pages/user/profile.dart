@@ -21,7 +21,7 @@ class _ProfileState extends State<Profile> {
       await user!.sendEmailVerification();
       print('Verification Email has benn sent');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.orangeAccent,
           content: Text(
             'Verification Email has been sent',
@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Login(),
+          builder: (context) => const Login(),
         ),
       );
     }
@@ -41,32 +41,32 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Column(
         children: [
           Text(
             'User ID: $uid',
-            style: TextStyle(fontSize: 15.0),
+            style: const TextStyle(fontSize: 15.0),
           ),
           Column(
             children: [
               Text(
                 'Email: $email',
-                style: TextStyle(fontSize: 15.0),
+                style: const TextStyle(fontSize: 15.0),
               ),
               user!.emailVerified
-                  ? Text(
+                  ? const Text(
                       'verified',
                       style: TextStyle(fontSize: 15.0, color: Colors.blueGrey),
                     )
                   : TextButton(
                       onPressed: () => {verifyEmail()},
-                      child: Text('Verify Email'))
+                      child: const Text('Verify Email'))
             ],
           ),
           Text(
             'Created: $creationTime',
-            style: TextStyle(fontSize: 15.0),
+            style: const TextStyle(fontSize: 15.0),
           ),
         ],
       ),

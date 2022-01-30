@@ -49,23 +49,6 @@ class _MobileVerificationState extends State<MobileVerification> {
                     : getOtpFormWidget(context),
             padding: const EdgeInsets.all(16),
           ),
-          Container(
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Login in with Email'),
-            TextButton(
-                onPressed: () => {
-                      Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                              Login(),
-                          transitionDuration: Duration(seconds: 0),
-                        ),
-                      )
-                    },
-                child: Text('Switch')),
-          ]))
         ],
       ),
     );
@@ -87,15 +70,19 @@ class _MobileVerificationState extends State<MobileVerification> {
 
       if (authCredential.user != null) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserMain()));
+            context, MaterialPageRoute(builder: (context) => const UserMain()));
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
         showLoading = false;
       });
 
-      // _scaffoldKey.currentState
-      //     .showSnackBar(SnackBar(content: Text(e.message)));
+      _scaffoldKey.currentState?.showSnackBar(const SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            "Some Error Occured",
+            style: TextStyle(fontSize: 18.0, color: Colors.black),
+          )));
     }
   }
 
@@ -110,12 +97,12 @@ class _MobileVerificationState extends State<MobileVerification> {
               labelStyle: const TextStyle(fontSize: 20.0),
               border: const OutlineInputBorder(),
               errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-              hintText: "Phone Number",
+              hintText: "Phone Number:+92___ -__",
             ),
             controller: phoneController),
       ),
       const SizedBox(
-        height: 16,
+        height: 8,
       ),
       ElevatedButton(
         child: const Text(
@@ -138,8 +125,12 @@ class _MobileVerificationState extends State<MobileVerification> {
               setState(() {
                 showLoading = false;
               });
-              // _scaffoldKey.currentState.showSnackBar(
-              //     SnackBar(content: Text(verificationFailed.message)));
+              _scaffoldKey.currentState?.showSnackBar(const SnackBar(
+                  backgroundColor: Colors.orangeAccent,
+                  content: Text(
+                    "Some Error Occured",
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),
+                  )));
             },
             codeSent: (verificationId, resendingToken) async {
               setState(() {
@@ -151,7 +142,23 @@ class _MobileVerificationState extends State<MobileVerification> {
             codeAutoRetrievalTimeout: (verificationId) async {},
           );
         },
-      )
+      ),
+      Container(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        const Text('Login in with Email'),
+        TextButton(
+            onPressed: () => {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          const Login(),
+                      transitionDuration: const Duration(seconds: 0),
+                    ),
+                  )
+                },
+            child: const Text('Switch')),
+      ])),
     ]);
   }
 
@@ -171,7 +178,7 @@ class _MobileVerificationState extends State<MobileVerification> {
             controller: otpController),
       ),
       const SizedBox(
-        height: 16,
+        height: 8,
       ),
       ElevatedButton(
         child: const Text(
@@ -184,7 +191,23 @@ class _MobileVerificationState extends State<MobileVerification> {
                   verificationId: verificationId, smsCode: otpController.text);
           signInWithPhoneAuthCredential(phoneAuthCredential);
         },
-      )
+      ),
+      Container(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        const Text('Login in with Email'),
+        TextButton(
+            onPressed: () => {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          const Login(),
+                      transitionDuration: const Duration(seconds: 0),
+                    ),
+                  )
+                },
+            child: const Text('Switch')),
+      ])),
     ]);
   }
 }
