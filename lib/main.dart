@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/login.dart';
+import 'package:flutter_fb_auth/theme/themes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +27,12 @@ class MyApp extends StatelessWidget {
           }
           return MaterialApp(
             title: 'Flutter Firebase EMail Password Auth',
-            theme: ThemeData(
-              primarySwatch: Colors.deepPurple,
-            ),
+            themeMode: ThemeMode.system,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            // theme: ThemeData(
+            //   primarySwatch: Colors.deepPurple,
+            // ),
             debugShowCheckedModeBanner: false,
             home: Login(),
           );
