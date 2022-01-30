@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fb_auth/pages/login.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -23,9 +24,15 @@ class _ProfileState extends State<Profile> {
         SnackBar(
           backgroundColor: Colors.orangeAccent,
           content: Text(
-            'Verification Email has benn sent',
+            'Verification Email has been sent',
             style: TextStyle(fontSize: 18.0, color: Colors.black),
           ),
+        ),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Login(),
         ),
       );
     }

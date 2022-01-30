@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_auth/pages/forgetpassword.dart';
+import 'package:flutter_fb_auth/pages/mobileverification.dart';
 import 'package:flutter_fb_auth/pages/signup.dart';
 import 'package:flutter_fb_auth/pages/user/UserMain.dart';
 
@@ -124,6 +125,28 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Container(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('Login in with Phone no'),
+                    TextButton(
+                      onPressed: () => {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, a, b) =>
+                                  MobileVerification(),
+                              transitionDuration: Duration(seconds: 0),
+                            ),
+                            (route) => false)
+                      },
+                      child: Text('Switch'),
+                    ),
+                  ])),
+              Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -161,6 +184,7 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
   userLogin() async {
     try {
       await FirebaseAuth.instance
@@ -196,4 +220,5 @@ class _LoginState extends State<Login> {
         );
       }
     }
-  }}
+  }
+}

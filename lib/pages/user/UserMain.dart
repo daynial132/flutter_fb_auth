@@ -5,7 +5,6 @@ import 'package:flutter_fb_auth/pages/user/changePassword.dart';
 import 'package:flutter_fb_auth/pages/user/dashboard.dart';
 import 'package:flutter_fb_auth/pages/user/profile.dart';
 
-
 class UserMain extends StatefulWidget {
   const UserMain({Key? key}) : super(key: key);
 
@@ -14,13 +13,14 @@ class UserMain extends StatefulWidget {
 }
 
 class _UserMainState extends State<UserMain> {
-
+  User? user = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     Dashboard(),
     Profile(),
     ChangePassword(),
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -43,11 +43,11 @@ class _UserMainState extends State<UserMain> {
                     MaterialPageRoute(
                       builder: (context) => Login(),
                     ),
-                        (route) => false)
+                    (route) => false)
               },
               child: Text('Logout'),
               style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
-            )
+            ),
           ],
         ),
       ),

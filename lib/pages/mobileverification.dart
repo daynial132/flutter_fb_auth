@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fb_auth/pages/login.dart';
+import 'package:flutter_fb_auth/pages/user/UserMain.dart';
 
 enum MobileVerificationState {
   SHOW_MOBILE_FORM_STATE,
@@ -31,20 +33,70 @@ class _MobileVerificationState extends State<MobileVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Phone No. Verification"),
-        ),
-        key: _scaffoldKey,
-        body: Container(
-          child: showLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
-                  ? getMobileFormWidget(context)
-                  : getOtpFormWidget(context),
-          padding: const EdgeInsets.all(16),
-        ));
+      appBar: AppBar(
+        title: const Text("Phone No. Verification"),
+      ),
+      key: _scaffoldKey,
+      body: Column(
+        children: [
+          Container(
+            child: showLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
+                    ? getMobileFormWidget(context)
+                    : getOtpFormWidget(context),
+            padding: const EdgeInsets.all(16),
+          ),
+          Container(
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text('Login in with Email'),
+            TextButton(
+                onPressed: () => {
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              Login(),
+                          transitionDuration: Duration(seconds: 0),
+                        ),
+                      )
+                    },
+                child: Text('Switch')),
+          ]))
+        ],
+      ),
+    );
+  }
+
+  void signInWithPhoneAuthCredential(
+      PhoneAuthCredential phoneAuthCredential) async {
+    setState(() {
+      showLoading = true;
+    });
+
+    try {
+      final authCredential =
+          await _auth.signInWithCredential(phoneAuthCredential);
+
+      setState(() {
+        showLoading = false;
+      });
+
+      if (authCredential.user != null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UserMain()));
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        showLoading = false;
+      });
+
+      // _scaffoldKey.currentState
+      //     .showSnackBar(SnackBar(content: Text(e.message)));
+    }
   }
 
   getMobileFormWidget(context) {
@@ -130,8 +182,7 @@ class _MobileVerificationState extends State<MobileVerification> {
           PhoneAuthCredential phoneAuthCredential =
               PhoneAuthProvider.credential(
                   verificationId: verificationId, smsCode: otpController.text);
-          print(phoneAuthCredential);
-          // signInWithPhoneAuthCredential(phoneAuthCredential);
+          signInWithPhoneAuthCredential(phoneAuthCredential);
         },
       )
     ]);
