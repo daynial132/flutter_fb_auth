@@ -93,8 +93,8 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(left: 60.0),
-                      child: Row(
+                      margin: const EdgeInsets.only(left: 0.0),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                             },
                             child: const Text(
                               'Forgot Password ?',
-                              style: TextStyle(fontSize: 10.0),
+                              style: TextStyle(fontSize: 15.0),
                             ),
                           ),
                         ],

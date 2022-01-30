@@ -37,20 +37,21 @@ class _MobileVerificationState extends State<MobileVerification> {
         title: const Text("Phone No. Verification"),
       ),
       key: _scaffoldKey,
-      body: Column(
-        children: [
-          Container(
-            child: showLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
-                    ? getMobileFormWidget(context)
-                    : getOtpFormWidget(context),
-            padding: const EdgeInsets.all(16),
-          ),
-        ],
-      ),
+      body: showLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              children: [
+                Container(
+                  child: currentState ==
+                          MobileVerificationState.SHOW_MOBILE_FORM_STATE
+                      ? getMobileFormWidget(context)
+                      : getOtpFormWidget(context),
+                  padding: const EdgeInsets.all(16),
+                ),
+              ],
+            ),
     );
   }
 
@@ -89,7 +90,7 @@ class _MobileVerificationState extends State<MobileVerification> {
   getMobileFormWidget(context) {
     return Column(children: [
       Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: 22.0),
         child: TextFormField(
             autofocus: false,
             decoration: const InputDecoration(
