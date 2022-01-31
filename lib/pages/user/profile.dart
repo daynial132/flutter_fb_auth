@@ -44,10 +44,15 @@ class _ProfileState extends State<Profile> {
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Column(
         children: [
+          SizedBox(height: 20,),
           Text(
-            'User ID: $uid',
+            'Created: $creationTime',
             style: const TextStyle(fontSize: 15.0),
           ),
+          // Text(
+          //   'User ID: $uid',
+          //   style: const TextStyle(fontSize: 15.0),
+          // ),
           Column(
             children: [
               Text(
@@ -64,10 +69,7 @@ class _ProfileState extends State<Profile> {
                       child: const Text('Verify Email'))
             ],
           ),
-          Text(
-            'Created: $creationTime',
-            style: const TextStyle(fontSize: 15.0),
-          ),
+
         ],
       ),
     );

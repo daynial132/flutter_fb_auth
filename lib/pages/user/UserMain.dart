@@ -4,6 +4,7 @@ import 'package:flutter_fb_auth/pages/login.dart';
 import 'package:flutter_fb_auth/pages/user/changePassword.dart';
 import 'package:flutter_fb_auth/pages/user/dashboard.dart';
 import 'package:flutter_fb_auth/pages/user/profile.dart';
+import 'package:flutter_fb_auth/widget/navigationdrawerwidget.dart';
 
 class UserMain extends StatefulWidget {
   const UserMain({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class _UserMainState extends State<UserMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,13 +48,14 @@ class _UserMainState extends State<UserMain> {
                     (route) => false)
               },
               child: Text('Logout'),
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              style: ElevatedButton.styleFrom(primary: Color(0xFF923C1B)),
             ),
           ],
         ),
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 10,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -68,7 +71,7 @@ class _UserMainState extends State<UserMain> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.red,
+        selectedItemColor: Colors.brown,
         onTap: _onItemTapped,
       ),
     );
