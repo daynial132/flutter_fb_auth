@@ -12,24 +12,30 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
 
+  var name = "";
   var email = "";
   var password = "";
   var confirmPassword = "";
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+
 
   bool showLoading = false;
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+
     super.dispose();
   }
 
@@ -49,6 +55,7 @@ class _SignupState extends State<Signup> {
                 )
               : ListView(
                   children: [
+                    namefunction(context),
                     emailfunction(context),
                     passwordfunction(context),
                     confirmpasswordfunction(context),
@@ -66,6 +73,8 @@ class _SignupState extends State<Signup> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+
+
         // print(userCredential);
         // ScaffoldMessenger.of(context).showSnackBar(
         //   SnackBar(
@@ -183,6 +192,27 @@ class _SignupState extends State<Signup> {
     );
   }
 
+  namefunction(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: TextFormField(
+        autofocus: false,
+        decoration: const InputDecoration(
+          labelText: 'Email: ',
+          labelStyle: TextStyle(fontSize: 20.0),
+          border: OutlineInputBorder(),
+          errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+        ),
+        controller: nameController,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please Enter name';
+          }
+          return null;
+        },
+      ),
+    );
+  }
   emailfunction(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -218,6 +248,7 @@ class _SignupState extends State<Signup> {
               if (_formKey.currentState!.validate()) {
                 setState(() {
                   showLoading = true;
+                  name = nameController.text;
                   email = emailController.text;
                   password = passwordController.text;
                   confirmPassword = confirmPasswordController.text;

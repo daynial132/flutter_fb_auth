@@ -1,20 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fb_auth/pages/login.dart';
 import 'package:flutter_fb_auth/pages/user/profile.dart';
 import 'package:flutter_fb_auth/pages/user/userdel.dart';
-
+import 'package:flutter_fb_auth/theme/thememodel.dart';
+import 'package:provider/provider.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
+
   @override
   Widget build(BuildContext context) {
     final name = 'Sarah Abs';
     final email = 'sarah@abs.com';
     final urlImage =
         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
-
+    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
     return Drawer(
-      child: Material(
-        color: Color.fromRGBO(50, 75, 205, 1),
+      //backgroundColor: Colors.purple,
+     // child: Material(
+       // color: Color.fromRGBO(50, 75, 205, 1),
         child: ListView(
           children: <Widget>[
             buildHeader(
@@ -45,16 +50,15 @@ class NavigationDrawerWidget extends StatelessWidget {
                   buildMenuItem(
                     text: 'Logout',
                     icon: Icons.logout,
-                    onClicked: () => selectedItem(context, 4),
+                    onClicked: () => selectedItem(context, 1),
                   ),
-
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
+      //),
+    );});
   }
 
   Widget buildHeader({
@@ -88,7 +92,7 @@ class NavigationDrawerWidget extends StatelessWidget {
               Spacer(),
               CircleAvatar(
                 radius: 24,
-                backgroundColor: Color.fromRGBO(30, 60, 168, 1),
+                //backgroundColor: Color.fromRGBO(67, 168, 30, 1.0),
                 child: Icon(Icons.add_comment_outlined, color: Colors.white),
               )
             ],
@@ -146,10 +150,18 @@ class NavigationDrawerWidget extends StatelessWidget {
         ));
         break;
       case 1:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Profile(),
-        ));
+        Logout(context);
         break;
     }
+  }
+
+  void Logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Login(),
+        ),
+        (route) => false);
   }
 }

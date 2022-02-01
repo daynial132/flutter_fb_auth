@@ -211,9 +211,10 @@ class _LoginState extends State<Login> {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      setState(() {
-        showLoading = false;
-      });
+
+       setState(() {
+       showLoading = false;
+       });
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -221,6 +222,7 @@ class _LoginState extends State<Login> {
         ),
       );
     } on FirebaseAuthException catch (e) {
+
       if (e.code == 'user-not-found') {
         print("No User Found for that Email");
         ScaffoldMessenger.of(context).showSnackBar(
@@ -257,6 +259,8 @@ class _LoginState extends State<Login> {
       } else {
         print(e);
       }
-    }
+      setState(() {
+        showLoading = false;
+      });  }
   }
 }
